@@ -1,0 +1,549 @@
+﻿<Page
+    x:Class="CtpKiosk.EditorResctangle"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"    
+    xmlns:local="using:CtpKiosk"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
+    mc:Ignorable="d">
+
+    <Grid Style="{StaticResource LayoutRootStyle}" Background="Purple">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>        
+        <!-- Back button and page title -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BackButton"
+							IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}"
+							Style="{StaticResource BackButtonStyle}"
+							Click='BackButton_Click' />
+            <TextBlock x:Name="pageTitle"
+								 Grid.Column="1"
+								 Text="Design your Image Cake"
+								 Style="{StaticResource PageHeaderTextStyle}"  />
+        </Grid>
+
+        <!--PointerPressed="StartMarking"
+						PointerReleased="StopMarking" PointerMoved="UpdateMarking" -->
+
+        <Canvas Name="root"  Width="1100" Height="550" 
+						Margin='-260,-100,0,0'
+                        Grid.Row="1" >
+
+            <Canvas x:Name="imgFinal" Background="Wheat" Canvas.ZIndex="10" >
+                <Grid x:Name="grdImageContainer" HorizontalAlignment="Left" MaxWidth="1100" MaxHeight="550" ManipulationMode="All"  ManipulationDelta="target_ManipulationDelta" >
+
+                    <!--<Border BorderThickness="1" x:Name="brdTarget"  BorderBrush="Aqua" MaxWidth="1100" MaxHeight="550" >-->
+                    <Image x:Name="target"
+						 Source="Assets/Sample.png" MaxWidth="1100" MaxHeight="550"  Stretch="Uniform" RenderTransformOrigin="0.5,0.5"   >
+
+                        <Image.RenderTransform>
+                            <CompositeTransform />
+                        </Image.RenderTransform>
+                    </Image>
+                    <!--</Border>-->
+                    
+                    <Grid.RenderTransform>
+                        <CompositeTransform/>
+                    </Grid.RenderTransform>
+                </Grid>
+                   
+            <!--<ScrollViewer x:Name="scrollViewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"  ZoomMode="Enabled">-->
+                <Grid x:Name="Output1" >
+                    <ScrollViewer x:Name="scrollViewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" ZoomMode="Enabled" MinZoomFactor="0.7" ManipulationMode="All"  ManipulationDelta="scrollViewer_ManipulationDelta"  ViewChanged="scrollViewer_ViewChanged" ViewChanging="scrollViewer_ViewChanging" >
+                        <Image x:Name="targetSecond"  Stretch="Fill" Height="200" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left" 
+						 Source=""  >
+                            <Image.RenderTransform>
+                                <CompositeTransform/>
+                            </Image.RenderTransform>
+                        </Image>
+                        <ScrollViewer.RenderTransform>
+                            <CompositeTransform/>
+                        </ScrollViewer.RenderTransform>
+                    </ScrollViewer>
+                </Grid>
+                <!--</ScrollViewer>-->
+                <Border Width="400"
+							Height="400"
+							x:Name="marking"
+							BorderThickness="2"
+							BorderBrush="Red"
+                     ManipulationMode="All"
+                    ManipulationDelta="marking_ManipulationDelta"      
+                       
+             >
+                    <Border.RenderTransform>
+
+                        <CompositeTransform></CompositeTransform>
+
+                    </Border.RenderTransform>
+                </Border>
+              
+                <Grid x:Name="Output"
+						VerticalAlignment="Top"
+						Grid.Row="1">
+
+                  
+                <TextBlock x:Name='TextTransform'
+									 Text=''
+                               		 Margin='0,0,-140,-172'
+									 FontSize='54' 
+                                        		  TextAlignment='Center' ManipulationMode="All" ManipulationDelta="TextTransform_ManipulationDelta">
+                    <TextBlock.Projection>
+                        <PlaneProjection x:Name='TBProjection' />
+                    </TextBlock.Projection>
+                        <TextBlock.RenderTransform>
+                            <CompositeTransform></CompositeTransform>
+                        </TextBlock.RenderTransform>
+                    
+                </TextBlock>
+                   
+                    <Canvas Name="curve" Margin='0,0,-140,-172'></Canvas>
+                </Grid>
+            </Canvas>
+           
+            <Popup VerticalOffset="40"
+						 HorizontalOffset="600"
+						 x:Name="StandardPopup">
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
+								BorderThickness="2"
+								Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+								Width="500"
+								Height="650">
+
+                    <StackPanel HorizontalAlignment="Center"
+											Canvas.Left='25'
+											VerticalAlignment="Center">
+                        <ListBox>
+                            <TextBlock Text="Add Text"
+												 FontSize="24.667"
+												 HorizontalAlignment="Right" />
+                            <TextBox x:Name='Transform'  MaxLength="30"
+											 Width='300'
+											 AcceptsReturn='True'
+											 TextChanged='Transform_TextChanged' />
+                            <TextBlock Text="Text Color"
+												 FontSize="24.667"
+												 HorizontalAlignment="Right" />
+
+                            <ComboBox x:Name='ColorPicker' Width='300'
+												SelectionChanged='ColorPicker_SelectionChanged'>
+
+                                <ComboBoxItem Background='Aqua'>Aqua</ComboBoxItem>
+                                <ComboBoxItem Background='Black'>Black</ComboBoxItem>
+                                <ComboBoxItem Background='Blue'>Blue</ComboBoxItem>
+                                <ComboBoxItem Background='Fuchsia'>Fuchsia</ComboBoxItem>
+                                <ComboBoxItem Background='Green'>Green</ComboBoxItem>
+                                <ComboBoxItem Background='Gray'>Gray</ComboBoxItem>
+                                <ComboBoxItem Background='Lime'>Lime</ComboBoxItem>
+                                <ComboBoxItem Background='Maroon'>Maroon</ComboBoxItem>
+                                <ComboBoxItem Background='Navy'>Navy</ComboBoxItem>
+                                <ComboBoxItem Background='Olive'>Olive</ComboBoxItem>
+                                <ComboBoxItem Background='Purple'>Purple</ComboBoxItem>
+                                <ComboBoxItem Background='Red'>Red</ComboBoxItem>
+                                <ComboBoxItem Background='Silver'>Silver</ComboBoxItem>
+                                <ComboBoxItem Background='Teal'>Teal</ComboBoxItem>
+                                <ComboBoxItem Background='White'>White</ComboBoxItem>
+                                <ComboBoxItem Background='Yellow'>Yellow</ComboBoxItem>
+
+
+                            </ComboBox>
+                            <TextBlock Text="Text Size"
+												 FontSize="24.667"
+												 HorizontalAlignment="Right" />
+
+                            <Slider Width='300' x:Name='TextSize'
+											ValueChanged='TextSize_ValueChanged' />
+
+
+
+                            <TextBlock Text="Text Style"
+												 FontSize="24.667"
+												 HorizontalAlignment="Right" />
+                            <ComboBox x:Name='ChangeFont' Width='300'
+												SelectionChanged='ChangeFont_SelectionChanges'>
+                                <ComboBoxItem FontFamily='Arial'>Arial</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Buxton Sketch'>Buxton Sketch</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Calibri'>Calibri</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Cambria'>Cambria</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Cambria Math'>Cambria Math</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Candara'>Candara</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Comic Sans MS'>Comic Sans MS</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Consolas'>Consolas</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Constantia'>Constantia</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Corbel'>Corbel</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Courier'>Courier</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Courier New'>Courier New</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Fixedsys'>Fixedsys</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Franklin Gothic'>Franklin Gothic</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Gabriola'>Gabriola</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Georgia'>Georgia</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Impact'>Impact</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Lucida Console'>Lucida Console</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Lucida Sans Unicode'>Lucida Sans Unicode</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Microsoft Sans Serif'>Microsoft Sans Serif</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Modern'>Modern</ComboBoxItem>
+                                <ComboBoxItem FontFamily='MS Sans Serif'>MS Sans Serif</ComboBoxItem>
+                                <ComboBoxItem FontFamily='MS Serif'>MS Serif</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Palatino Linotype'>Palatino Linotype</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Roman'>Roman</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Script'>Script</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Segoe Print'>Segoe Print</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Segoe Script'>Segoe Script</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Segou UI'>Segou UI</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Segou UI Emoji'>Segou UI Emoji</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Segou UI Symbol'>Segou UI Symbol</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Sitka Banner'>Sitka Banner</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Sitka Display'>Sitka Display</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Sitka Heading'>Sitka Heading</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Sitka Small'>Sitka Small</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Sitka Subheading'>Sitka Subheading</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Sitka Text'>Sitka Text</ComboBoxItem>
+                                <ComboBoxItem FontFamily='SketchFlow Print'>SketchFlow Print</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Small Fonts'>Small Fonts</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Symbol'>Symbol</ComboBoxItem>
+                                <ComboBoxItem FontFamily='System'>System</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Tahoma'>Tahoma</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Terminal'>Terminal</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Timew New Roman'>Timew New Roman</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Trebuchet MS'>Trebuchet MS</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Verdana'>Verdana</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Webdings'>Webdings</ComboBoxItem>
+                                <ComboBoxItem FontFamily='Wingdings'>Wingdings</ComboBoxItem>
+                            </ComboBox>
+                        </ListBox>
+                        <Button Content="Close"
+										Click="ClosePopupClicked"
+										HorizontalAlignment="Right" />
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+        </Canvas>
+        <Canvas>
+              <StackPanel Height="512" x:Name="stkpnlButtons">             
+                <Button Content="Add Text &amp; Styles"
+								Click="ShowPopupOffsetClicked"
+								Margin='1170,0,0,0'
+								Width='165'
+								Height='120' Grid.Row="0" />
+                <Button Content="Move Text &amp; Rotate"
+                         x:Name="Scale"
+								Click="ShowPopupTextEffects"
+								Margin='1170,0,0,0'
+								Height='120'
+                                Width='165' Grid.Row="1"
+                        />
+
+                <Button Content="Scale &amp; Reposition"
+								Click="ShowPopupScaleEffects"
+								Margin='1170,0,0,0'
+                               Width='165'
+								Height='120' Grid.Row="2" />
+                <Button Content="Text Curve"	Click="ShowPopupCurveEffects" Margin='1170,0,0,0'  Width='165' Height='120' Grid.Row="3" />
+
+            </StackPanel>           
+        </Canvas>
+        <Canvas>
+
+            <Popup x:Name='TextEffects'
+						 VerticalOffset="60"
+						 HorizontalOffset="750">
+
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
+								BorderThickness="2"
+								Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+								Width="300"
+								Height="600">
+                    <StackPanel  HorizontalAlignment="Center"
+											 Canvas.Left='25'
+											 VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="2"
+											 Grid.Row="0"
+											 Text="LocalOffsetX:"
+											 VerticalAlignment="Center" />
+                        <Slider Grid.Column="3" x:Name="sliderXAxis"
+										Grid.Row="0"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"																			
+										Value="{Binding ElementName=TBProjection, Path=LocalOffsetX, Mode=TwoWay}" />
+
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="2"
+											 Text="LocalOffsetY:"
+											 VerticalAlignment="Center"
+											 Grid.Row='1' />
+                        <Slider Grid.Column="3" x:Name="sliderYAxis"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"																		
+										Value="{Binding ElementName=TBProjection, Path=LocalOffsetY, Mode=TwoWay}"
+										Grid.Row='1' />
+
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="1"
+											 Text="RotationY:"
+	
+											 VerticalAlignment="Center" />
+                        <Slider Grid.Column="1"
+										Grid.Row="1"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="360"
+										Value="{Binding ElementName=TBProjection, Path=RotationY, Mode=TwoWay}"
+										Height='32' />
+
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="2"
+											 Text="RotationZ:"
+		
+											 VerticalAlignment="Center" />
+                        <Slider Grid.Column="1"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="360"
+										Value="{Binding ElementName=TBProjection, Path=RotationZ, Mode=TwoWay}" />
+
+                        <!-- For Curver -->
+
+                        <!--<TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="2"
+											 Text="Curve:"
+		 							 	 VerticalAlignment="Center" />
+                        <Slider Grid.Column="1"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="360"
+										ValueChanged="Slider_ValueChanged" />-->
+                        <!-- End For Curver -->
+
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="2"
+											 Grid.Row="2"
+											 Text="LocalOffsetZ:"
+		
+											 VerticalAlignment="Center" />
+                        <Slider Grid.Column="3"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="-150"
+										Maximum="150"
+										Value="{Binding ElementName=TBProjection, Path=LocalOffsetZ, Mode=TwoWay}" />
+
+                        <Button Content="Close"
+										Click="ClosePopupTextEffectsClicked"
+										HorizontalAlignment="Right" />
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+            <!--POP up for scaling -->
+
+            <Popup x:Name="ImageScale"
+						 VerticalOffset="60"
+						 HorizontalOffset="750">
+
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
+								BorderThickness="2"
+								Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+								Width="300"
+								Height="600">
+                    <StackPanel  HorizontalAlignment="Center"
+											 Canvas.Left='25'
+											 VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="2"
+											 Text="ScaleX:"
+                                         
+		 							 	 VerticalAlignment="Center" />
+                        <Slider Grid.Column="1"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="100"
+										ValueChanged="Scale_ValueChanged" />
+
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="2"
+											 Text="ScaleY:"
+		 							 	 VerticalAlignment="Center" />
+                        <Slider Grid.Column="1"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="100"
+                                 ValueChanged="Slider_ValueChanged_1"
+										 />
+
+
+                        <Button Content="Close"
+										Click="ClosePopupScaleeffectsClicked"
+										HorizontalAlignment="Right" />
+
+
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <!--POP up for text curving -->
+            <Popup x:Name="curvePopup"
+						 VerticalOffset="60"
+						 HorizontalOffset="750">
+
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
+								BorderThickness="2"
+								Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+								Width="300"
+								Height="600">
+                    <StackPanel  HorizontalAlignment="Center"
+											 Canvas.Left='25'
+											 VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="2"
+											 Text="Curve:"                                         
+		 							 	 VerticalAlignment="Center" />
+                        <Slider Grid.Column="1"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="25"
+										ValueChanged="Slider_ValueChanged" />
+
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="2"
+											 Text="ScaleX:"
+		 							 	 VerticalAlignment="Center" />
+                        <Slider Grid.Column="1"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="400"
+                                        ValueChanged="ScaleX_ValueChanged"/>
+
+
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="2"
+											 Text="ScaleY:"
+		 							 	 VerticalAlignment="Center" />
+
+                        <Slider Grid.Column="1"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="380"
+                                        ValueChanged="ScaleY_ValueChanged"/>
+                        <TextBlock Style="{StaticResource BasicTextStyle}"
+											 Grid.Column="0"
+											 Grid.Row="2"
+											 Text="ScaleCurve:"                                         
+		 							 	 VerticalAlignment="Center" />
+                        <Slider Grid.Column="1"
+										Grid.Row="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Width="150"
+										Minimum="0"
+										Maximum="10"                                 
+										ValueChanged="ScaleSlider_ValueChanged" />
+
+                        <Button Content="Close"
+										Click="ClosePopupCurveeffectsClicked"
+										HorizontalAlignment="Right" />
+
+
+                    </StackPanel>
+                </Border>
+            </Popup>
+        </Canvas>
+    </Grid>
+
+
+    <Page.BottomAppBar>
+        <AppBar IsOpen="True"
+						IsSticky="True" Background="Purple">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+										Orientation="Horizontal">
+                    <Button Content="&#xE1A5;"
+                            Name="selectCake"
+									AutomationProperties.Name="Select File"
+									Click="selectFileClick"
+									Style="{StaticResource AppBarButtonStyle}" />
+                    <Button Content="&#xE105;" Name="btnSave"
+									AutomationProperties.Name="Save"
+									Click="saveClick"
+									Style="{StaticResource AppBarButtonStyle}" />
+
+                    <Button  x:Name="btnMoveTOPrint" AutomationProperties.Name="Print"  Click="btnMoveTOPrint_Click" Style="{StaticResource AppBarButtonStyle}">
+
+                        <Image  Source="Assets/print.png"  Margin="0,0,0,0"  />
+
+                    </Button>
+
+                    <Button  x:Name="btnRotate" AutomationProperties.Name="Rotate"  Click="btnRotate_Click" Style="{StaticResource AppBarButtonStyle}">
+
+                        <Image  Source="Assets/print.png"  Margin="0,0,0,0"  />
+
+                    </Button>
+
+
+                    <!--<Button x:Name="invokePrintingButton" Content="Print" Margin="0,0,10,0" Click="InvokePrintButtonClick"/>-->
+
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+										HorizontalAlignment="Right"
+										Orientation="Horizontal">
+                    <Button Content="&#xE123;"
+                            Name="btnCrop"
+									AutomationProperties.Name="Crop"
+									Click="cropClick"
+									Style="{StaticResource AppBarButtonStyle}" />
+                    <Button Content="&#xE1D8;"
+									AutomationProperties.Name="Reset"
+									Click="resetClick"
+									Style="{StaticResource AppBarButtonStyle}" />
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
+
+</Page>

@@ -1,0 +1,50 @@
+﻿<Page x:Class="CtpKiosk.MainPage"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:local="using:CtpKiosk"
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			mc:Ignorable="d">
+
+    <!--<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">-->
+    <Grid Style="{StaticResource LayoutRootStyle}" Background="Purple">
+        <Canvas HorizontalAlignment='Center'
+						Margin='683,0'>
+
+			<Button Width='200'
+							Height='200'
+							Content='Square Cake'
+							Canvas.Left='-225'
+							Canvas.Top='91'
+							x:Name='First'
+							Click='First_Click' />
+			<Button Width='200'
+							Height='200'
+							Content='Cookies and Cupcakes'
+							Canvas.Top='91'
+							Canvas.Left='22'
+							x:Name='Second'
+							Click='Second_Click'/>
+			<Button Width='200'
+							Height='200'
+							Content='Order Form'
+							Canvas.Left='-330'
+							Canvas.Top='322'
+							x:Name='Third'
+							Click='Third_Click'/>
+			<Button Width='200'
+							Height='200'
+							Content='1/2 Sheet Serves 35-40'
+							Canvas.Top='322'
+							Canvas.Left='-102' x:Name='Fourth'
+							Click='Fourth_Click'/>
+			<Button Width='200'
+							Height='200'
+							Content='Update Bakers Email'
+							Canvas.Top='322'
+							Canvas.Left='130' x:Name='Fifth'
+							Click='Fifth_Click'/>
+
+		</Canvas>
+	</Grid>
+</Page>

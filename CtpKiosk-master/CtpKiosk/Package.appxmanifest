@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="3cc52d37-51d9-47b9-abc2-a0cfba44b4c0" Publisher="CN=Thomas Kenny" Version="1.0.0.0" />
+  <Properties>
+    <DisplayName>CtpKiosk</DisplayName>
+    <PublisherDisplayName>Thomas Kenny</PublisherDisplayName>
+    <Logo>Assets\FlatIconcake50x50.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="CtpKiosk.App">
+      <m2:VisualElements DisplayName="CtpKiosk" Square150x150Logo="Assets\FlatIconcake150x150.png" Square30x30Logo="Assets\FlatIconcake30x30.png" Description="CtpKiosk" ForegroundText="light" BackgroundColor="#464646">
+        <m2:SplashScreen Image="Assets\splashscreen1620x300.jpg" />
+        <m2:ApplicationView MinWidth="width320" />
+      </m2:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <Capability Name="picturesLibrary" />
+  </Capabilities>
+</Package>

@@ -1,0 +1,51 @@
+﻿<Page
+    x:Class="CtpKiosk.ImageGestures"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CtpKiosk"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <!--<Rectangle Name="TestRectangle"
+  Height="100" Width="200" Fill="Blue"
+  PointerPressed="TestRectangle_PointerPressed"
+  PointerReleased="TestRectangle_PointerReleased"
+  PointerExited="TestRectangle_PointerExited" />-->
+
+        <Canvas >
+            <Image  ManipulationMode='All'
+          Source='Assets/sample.png'
+          Canvas.Top='79'
+          Canvas.Left='107'>
+                <Image.RenderTransform>
+                    <CompositeTransform  />
+                </Image.RenderTransform>
+            </Image>
+
+            <Image  ManipulationMode='All'
+                    x:Name="Test"
+          Source='Assets/grapesBW.png'
+          Canvas.Top='79'
+          Canvas.Left='461'>
+                <Image.RenderTransform>
+                    <CompositeTransform />
+                </Image.RenderTransform>
+            </Image>
+            <Rectangle Fill='#7FFFAAAB'
+           Height='100'
+           Canvas.Left='107'
+           Stroke='Black'
+           Canvas.Top='335'
+           Width='300' />
+            <Rectangle Fill='#7F738D01'
+           Height='100'
+           Canvas.Left='461'
+           Stroke='Black'
+           Canvas.Top='335'
+           Width='300' />
+        </Canvas>
+
+    </Grid>
+</Page>
