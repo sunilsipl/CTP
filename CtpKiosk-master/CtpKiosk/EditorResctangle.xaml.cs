@@ -1144,7 +1144,7 @@ namespace CtpKiosk
             double width = root.ActualWidth;
           //  grdCurve.Background = new SolidColorBrush(Windows.UI.Colors.Aqua);
          //   grdCurve.Height = curve.ActualHeight;
-          //  grdCurve.Width = curve.ActualWidth;
+          //  
             
             try
             {
