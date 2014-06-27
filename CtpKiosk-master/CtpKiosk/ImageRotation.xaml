@@ -7,17 +7,27 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-        <Canvas Background="Green" Height="500" Width="600" VerticalAlignment="Center">
+        <!--<Canvas Background="Green" Height="500" Width="600" VerticalAlignment="Center">
             <Image Canvas.Left="10" Canvas.Top="0" Source="Assets/dogs1.jpg"  x:Name="imgRotation" Height="500" Width="550"  RenderTransformOrigin="0.5,0.5" Stretch="UniformToFill" HorizontalAlignment="Left" VerticalAlignment="Top" >
                 <Image.RenderTransform>
-                     <!--or use 90--> 
+                     --><!--or use 90--><!-- 
                     <CompositeTransform Rotation="-90" TranslateY="40"/>
                 </Image.RenderTransform>
             </Image>
         <Button Content="RotateImage" x:Name="btnRotate" Click="btnRotate_Click" ></Button>
-    </Canvas>
-        
+    </Canvas>-->
 
+    <Canvas>
+        <Image x:Name="myImage"
+           ManipulationMode="All"
+           ManipulationDelta="Image_ManipulationDelta_1"
+               Source="Assets/dogs1.jpg"
+           RenderTransformOrigin="0.5, 0.5">
+            <Image.RenderTransform>
+                <CompositeTransform></CompositeTransform>
+            </Image.RenderTransform>
+        </Image>
+    </Canvas>
     <!--<Grid>
         <Grid.Background>
             <ImageBrush ImageSource="Assets/Sample.png" />

@@ -190,7 +190,6 @@ namespace CtpKiosk
             }
         }
 
-        
    
         /// <summary>
         /// Function to set boundary for transform
@@ -264,8 +263,7 @@ namespace CtpKiosk
             var left = Canvas.GetLeft(target);
             var top = Canvas.GetTop(target);
 
-
-            //Output1.Height = targetSecond.ActualHeight;
+           // Output1.Height = targetSecond.ActualHeight;
           //  Output1.Width = targetSecond.ActualWidth; 
 
 
@@ -282,7 +280,6 @@ namespace CtpKiosk
             GestureRecognizer gs = new GestureRecognizer();
            try
             {
-                             
                 bool ellipse = false;
                 var bitmap = await objScreenShot.SaveScreenshotAsync(imgFinal, fileName, ellipse);
                 if (bitmap != null)
@@ -316,9 +313,7 @@ namespace CtpKiosk
             Canvas.SetTop(grdImageContainer, selectedTop * -1);
             Canvas.SetLeft(grdImageContainer, selectedLeft * -1);
             btnCrop.Visibility = Visibility.Collapsed;
-           
-          
-          //  brdTarget.BorderThickness = new Thickness(0);
+             //  brdTarget.BorderThickness = new Thickness(0);
          
           //  brdTarget.Clip = new RectangleGeometry() { Rect = new Rect(selectedLeft, selectedTop, selectedWidth, selectedHeight)};
            // brdTarget.BorderThickness = new Thickness(4);
@@ -351,7 +346,7 @@ namespace CtpKiosk
         {
             PointerPoint pointerLocation = e.GetCurrentPoint(sender as UIElement); // Get the pointer location
             leftStart = pointerLocation.Position.X;
-            topStart = pointerLocation.Position.Y;
+            topStart =  pointerLocation.Position.Y;
             updateMarking();
         }
         
@@ -1060,28 +1055,37 @@ namespace CtpKiosk
 
     
         /// <summary>
-        /// Image rotation
+        /// This event rotate the image to 90 deg each time
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnRotate_Click(object sender, RoutedEventArgs e)
         {
             var imgTargetSec = (CompositeTransform)target.RenderTransform;
-            var angle = imgTargetSec.Rotation;
-            imgTargetSec.Rotation += 90;
            
+           // imgTargetSec.Rotation = new RotateTransform();
+           
+            imgTargetSec.Rotation += 90;
+            var angle = imgTargetSec.Rotation;
+         
+                      
             if (isFirstTime == true) {
                 actualTImagewidth = target.ActualWidth;
                 isFirstTime = false;
             }
-            if (imgTargetSec.Rotation == 360) { imgTargetSec.Rotation = 0; }
+            if (angle == 360) { imgTargetSec.Rotation = 0; }
 
-            if (imgTargetSec.Rotation == 90 || imgTargetSec.Rotation == 270)
+            // This condition fix the image on same axis
+            if (angle == 90 || angle == 270)
             {
-                if (target.ActualWidth > 600) { target.Width = 600; }
+                target.Margin = new Thickness{ Left = 180, Top = 100 };
+                if (target.ActualWidth > 550) { target.Width = 550; } //target.Width = 550;
             }
-            else { target.Width = actualTImagewidth; }
-                               
+            else 
+            {
+                target.Margin = new Thickness { Left = 0, Top = 0 };
+                target.Width = actualTImagewidth;
+            }
         }
 
         /// <summary>
@@ -1099,9 +1103,56 @@ namespace CtpKiosk
                 var scaleY = -(elementToTransform.ScaleY * 28);    //Set the Y axis boudary to move up               
                 elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width, 0);
                 elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, height, 0);
+              
+               Point currentpoint = e.Position;
+
+             //  var canvastop = Canvas.GetTop(e.Delta.Translation.X);
+             //   var canvasleft = Canvas.GetLeft(marking);
+
+               if (elementToTransform.TranslateX > 300)
+               {
+                   Canvas.SetLeft(marking, 300);
+               }
+
+               else
+               {
+                   Canvas.SetLeft(marking, elementToTransform.TranslateX);
+                   Canvas.SetTop(marking, elementToTransform.TranslateY);
+               }
+       
+               selectedTop = Canvas.GetTop(marking) * 2;
+               selectedLeft = Canvas.GetLeft(marking) * 2;
+
+               selectedTop = elementToTransform.TranslateY * 2;
+               selectedLeft = elementToTransform.TranslateX * 2;
+
                 selectedHeight = marking.Height;
                 selectedWidth = marking.Width;
                 markingWidth = markingHeight = topStart = leftStart = 0;
+            }
+            catch (Exception ex) { }
+        }
+
+        /// <summary>
+        /// This event used to dgrag the text curve
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void curve_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+             double height = root.ActualHeight;
+            double width = root.ActualWidth;
+          //  grdCurve.Background = new SolidColorBrush(Windows.UI.Colors.Aqua);
+         //   grdCurve.Height = curve.ActualHeight;
+          //  grdCurve.Width = curve.ActualWidth;
+            
+            try
+            {
+                var elementToTransform = (CompositeTransform)curve.RenderTransform;
+                var scaleY = -(elementToTransform.ScaleY * 28);    //Set the Y axis boudary to move up               
+                elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width, 0);
+                elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, height, 0);
+              
             }
             catch (Exception ex) { }
         }

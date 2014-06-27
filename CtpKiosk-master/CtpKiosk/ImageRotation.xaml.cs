@@ -27,11 +27,24 @@ namespace CtpKiosk
             this.InitializeComponent();
         }
 
-        private void btnRotate_Click(object sender, RoutedEventArgs e)
+      /*  private void btnRotate_Click(object sender, RoutedEventArgs e)
         {
             var imgTargetSec = (CompositeTransform)imgRotation.RenderTransform;
             var angle = imgTargetSec.Rotation;
             imgTargetSec.Rotation += 90;
+        }*/
+
+
+        private void Image_ManipulationDelta_1(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            var ct = (CompositeTransform)myImage.RenderTransform;
+            ct.ScaleX *= e.Delta.Scale;
+            ct.ScaleY *= e.Delta.Scale;
+            ct.TranslateX += e.Delta.Translation.X;
+            ct.TranslateY += e.Delta.Translation.Y;
+            ct.Rotation += 180.0 / Math.PI * e.Delta.Rotation;
+           // UpdateControls(ct);
         }
+
     }
 }
