@@ -107,7 +107,7 @@
                             <CompositeTransform></CompositeTransform>
                         </TextBlock.RenderTransform>
                 </TextBlock>
-                  
+
                     <Canvas Name="curve" Margin='0,0,-140,-172' ManipulationMode="All" ManipulationDelta="curve_ManipulationDelta">
                         <Canvas.RenderTransform>
                             <CompositeTransform></CompositeTransform>
@@ -531,6 +531,9 @@
 
                     </Button>
 
+                    <Button  x:Name="btnZoomPlus" Content="&#xe1a3;" AutomationProperties.Name="Zoom+"  Click="btnZoomPlus_Click" Style="{StaticResource AppBarButtonStyle}" />
+                    <Button  x:Name="btnZoomMinus" Content="&#xe1a4;" AutomationProperties.Name="Zoom-"  Click="btnZoomMinus_Click" Style="{StaticResource AppBarButtonStyle}" />
+
 
                     <!--<Button x:Name="invokePrintingButton" Content="Print" Margin="0,0,10,0" Click="InvokePrintButtonClick"/>-->
 
@@ -538,13 +541,15 @@
                 <StackPanel Grid.Column="1"
 										HorizontalAlignment="Right"
 										Orientation="Horizontal">
-                    <Button Content="&#xE123;"
+
+                    <!--&#xE123;-->
+                    <Button Content="&#xe111;"
                             Name="btnCrop"
-									AutomationProperties.Name="Crop"
+									AutomationProperties.Name="Next"
 									Click="cropClick"
 									Style="{StaticResource AppBarButtonStyle}" />
                     <Button Content="&#xE1D8;"
-									AutomationProperties.Name="Reset"
+									AutomationProperties.Name="Start over"
 									Click="resetClick"
 									Style="{StaticResource AppBarButtonStyle}" />
                 </StackPanel>
