@@ -298,10 +298,12 @@ namespace CtpKiosk
         private void cropClick(object sender, RoutedEventArgs e)
         {
 
+           
             storeCropClick = "clicked";
             if (angle == 180)
             {
-                target.Clip = new RectangleGeometry() { Rect = new Rect((target.ActualWidth / 2) - selectedLeft, selectedTop, selectedWidth, selectedHeight) };  // Crop the image
+                target.Clip = new RectangleGeometry() { Rect = new Rect(selectedLeft, selectedTop, selectedWidth, selectedHeight) };
+               // target.Clip = new RectangleGeometry() { Rect = new Rect((target.ActualWidth / 2) - selectedLeft, selectedTop, selectedWidth, selectedHeight) };  // Crop the image
             }
             else
             {
@@ -312,8 +314,8 @@ namespace CtpKiosk
             marking.Visibility = Visibility.Collapsed;
             updateMarking();
             fitTargetBack();
-            Canvas.SetTop(grdImageContainer, selectedTop * -1);
-            Canvas.SetLeft(grdImageContainer, selectedLeft * -1);
+          //  Canvas.SetTop(grdImageContainer, selectedTop * -1);
+           // Canvas.SetLeft(grdImageContainer, selectedLeft * -1);
             btnCrop.Visibility = Visibility.Collapsed;
             btnRotate.Visibility = Visibility.Collapsed;
             btnZoomPlus.Visibility = Visibility.Collapsed;
@@ -641,9 +643,6 @@ namespace CtpKiosk
                 TextCurving();
             }
         }
-
-
-
 
         /// <summary>
         /// For text curving
@@ -1041,8 +1040,10 @@ namespace CtpKiosk
             double width = root.ActualWidth;
             try
             {
-               /* var imgTargetSec = (CompositeTransform)TextTransform.RenderTransform;
-               */
+                var imgTargetSec = (CompositeTransform)TextTransform.RenderTransform;
+                var scaleY = -(imgTargetSec.ScaleY * 28);    //Set the Y axis boudary to move up               
+                imgTargetSec.TranslateX = Boundary(imgTargetSec.TranslateX + e.Delta.Translation.X, width, 0);
+                imgTargetSec.TranslateY = Boundary(imgTargetSec.TranslateY + e.Delta.Translation.Y, 500, 0);
             }
             catch (Exception ex) { }
         }
@@ -1053,21 +1054,16 @@ namespace CtpKiosk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnRotate_Click(object sender, RoutedEventArgs e)
+         private void btnRotate_Click(object sender, RoutedEventArgs e)
         {
-            var imgTargetSec = (CompositeTransform)target.RenderTransform;
-            // imgTargetSec.Rotation = new RotateTransform();
 
-            //Top position of the image + half of (image height * scale factor)  + how far the user has moved the image up or down
-            // int imageHorizontalCenter = ((((int)target.Margin.Top + (int)target.ActualHeight) / 2) + (int)imgTargetSec.TranslateY);
-            //Left position of the image + half of (image width * scale factor) + how far the user has moved the image left or right
-            //   int imageVerticalCenter = (int)(target.Margin.Left + (int)((target.ActualWidth * imgTargetSec.ScaleX) / 2) + (int)imgTargetSec.TranslateX);
-
-
-
-            imgTargetSec.Rotation += 90;
+           
+            //var targetleft = Canvas.GetLeft(target);
+          //  var gettop = Canvas.GetTop(target);
+           var imgTargetSec = (CompositeTransform)target.RenderTransform;
+           imgTargetSec.Rotation += 90;
             angle = imgTargetSec.Rotation;
-
+            //var inverse = Canvas.GetLeft(marking);
 
             if (isFirstTime == true)
             {
@@ -1079,15 +1075,20 @@ namespace CtpKiosk
             // This condition fix the image on same axis
             if (angle == 90 || angle == 270)
             {
-                target.Margin = new Thickness { Left = 180, Top = 100 };
-                if (target.ActualWidth > 550) { target.Width = 550; } //target.Width = 550;
+               target.Margin = new Thickness { Left = 50, Top = 200 };
+              //  Canvas.SetLeft(target, 100);
+              //  Canvas.SetTop(target, 0);
+              //  target.Stretch = Stretch.UniformToFill;
+               if (target.ActualWidth > 550) { target.MaxWidth = 550; } //target.Width = 550;
             }
             else
             {
                 target.Margin = new Thickness { Left = 0, Top = 0 };
-                target.Width = actualTImagewidth;
+                target.MaxWidth = 1100;
+                //target.Width = actualTImagewidth;
             }
-        }
+
+       }
 
         /// <summary>
         /// This eent is for Moving printable area
@@ -1146,8 +1147,12 @@ namespace CtpKiosk
             
             try
             {
-             /*   curve.Margin = new Thickness { Left = 0 };
-              */
+              //  curve.Margin = new Thickness { Left = 0 };
+                var elementToTransform = (CompositeTransform)curve.RenderTransform;
+                var scaleY = -(elementToTransform.ScaleY * 28);    //Set the Y axis boudary to move up               
+                elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width, -220);
+                elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, 550, 0);
+              
             }
             catch (Exception ex) { }
         }
