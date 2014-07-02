@@ -29,16 +29,16 @@
 								 Style="{StaticResource PageHeaderTextStyle}"  />
         </Grid>
 
-       
+        <!--<Canvas Name="cvsSave">-->       
         <Canvas Name="root"  Width="1100" Height="550" 
 						Margin='-260,-100,0,0'
                         Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
 
-            <Canvas x:Name="imgFinal" Background="Wheat" Canvas.ZIndex="10" >
+            <Canvas x:Name="imgFinal" RenderTransformOrigin="0.5,0.5" MaxHeight="550" MaxWidth="1100" Background="Wheat" >
                 <Grid x:Name="grdImageContainer" HorizontalAlignment="Left" MaxWidth="1100" MaxHeight="550" ManipulationMode="All"  ManipulationDelta="target_ManipulationDelta" >
                    
                     <Image x:Name="target"
-						 Source="Assets/Sample.png" MaxWidth="1100" MaxHeight="550"  Stretch="Uniform" RenderTransformOrigin="0.5,0.5" >
+						 Source="Assets/Sample.png" MaxWidth="1100" MaxHeight="550"  Stretch="Uniform" >
 
                         <Image.RenderTransform>
                             <CompositeTransform />
@@ -50,7 +50,27 @@
                         <CompositeTransform/>
                     </Grid.RenderTransform>
                 </Grid>
-                   
+
+                <Border Width="400"
+							Height="400"
+                            MaxWidth="1100" MaxHeight="550"
+							x:Name="marking"
+							BorderThickness="2"
+							BorderBrush="Red"
+                            ManipulationMode="All"
+                            ManipulationDelta="marking_ManipulationDelta"
+                          >
+                    <Border.RenderTransform>
+                        <CompositeTransform></CompositeTransform>
+                    </Border.RenderTransform>
+                </Border>
+
+                <Canvas.RenderTransform>
+                    <CompositeTransform></CompositeTransform>
+
+                </Canvas.RenderTransform>
+            </Canvas>
+
             <!--<ScrollViewer x:Name="scrollViewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"  ZoomMode="Enabled">-->
                 <Grid x:Name="Output1" >
                     <ScrollViewer x:Name="scrollViewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" ZoomMode="Enabled" MinZoomFactor="0.7" ManipulationMode="All"  ManipulationDelta="scrollViewer_ManipulationDelta"  ViewChanged="scrollViewer_ViewChanged" ViewChanging="scrollViewer_ViewChanging" >
@@ -70,19 +90,7 @@
                 <!--<ScrollViewer x:Name="scrollViewer1"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" ZoomMode="Enabled" MinZoomFactor="0.7" MaxWidth="1100" MaxHeight="550" ManipulationMode="All"
                     ManipulationDelta="marking_ManipulationDelta">-->
                     
-                    <Border Width="400"
-							Height="400"
-                            MaxWidth="1100" MaxHeight="550"
-							x:Name="marking"
-							BorderThickness="2"
-							BorderBrush="Red"
-                            ManipulationMode="All"
-                            ManipulationDelta="marking_ManipulationDelta"
-                      >
-                        <Border.RenderTransform>
-                        <CompositeTransform></CompositeTransform>
-                    </Border.RenderTransform>
-                </Border>
+                   
                   
                     <!--<ScrollViewer.RenderTransform>
                         <CompositeTransform></CompositeTransform>
@@ -110,12 +118,13 @@
 
                     <Canvas Name="curve" Margin='0,0,-140,-172' ManipulationMode="All" ManipulationDelta="curve_ManipulationDelta">
                         <Canvas.RenderTransform>
-                            <CompositeTransform></CompositeTransform>
+                            <CompositeTransform ></CompositeTransform>
                         </Canvas.RenderTransform>
                    </Canvas>
       
                 </Grid>
-            </Canvas>
+                
+              
            
             <Popup VerticalOffset="40"
 						 HorizontalOffset="600"
@@ -232,10 +241,11 @@
             </Popup>
 
             <Canvas.RenderTransform>
-                <CompositeTransform/>
+                <CompositeTransform />
             </Canvas.RenderTransform>
             
         </Canvas>
+        <!--</Canvas>-->
         <Canvas>
               <StackPanel Height="512" x:Name="stkpnlButtons">             
                 <Button Content="Add Text &amp; Styles"
