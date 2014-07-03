@@ -50,7 +50,7 @@ namespace CtpKiosk
         //It will give nevigation on square cake editor
         private void Fourth_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(EditorResctangle));
+            this.Frame.Navigate(typeof(Border));
         }
         // It will give nevigation to update bakers email
         private void Fifth_Click(object sender, RoutedEventArgs e)

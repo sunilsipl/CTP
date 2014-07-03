@@ -133,6 +133,9 @@
     <Compile Include="EditorResctangle.xaml.cs">
       <DependentUpon>EditorResctangle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Border.xaml.cs">
+      <DependentUpon>Border.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageEditor\ImageEditorNew.xaml.cs">
       <DependentUpon>ImageEditorNew.xaml</DependentUpon>
     </Compile>
@@ -201,6 +204,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ImageRotation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Border.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

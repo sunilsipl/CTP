@@ -40,7 +40,7 @@ namespace CtpKiosk
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class EditorResctangle : Page
+    public sealed partial class Border : Page
     {
         double leftStart, topStart, markingWidth, markingHeight;
         double selectedLeft, selectedTop, selectedWidth, selectedHeight;
@@ -70,7 +70,7 @@ namespace CtpKiosk
         int imageVerticalCenter = 0;
         double angle;
 
-        public EditorResctangle()
+        public Border()
         {
             this.InitializeComponent();
             DetectScreenType();

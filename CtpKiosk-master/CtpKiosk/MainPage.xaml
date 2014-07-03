@@ -34,7 +34,7 @@
 							Click='Third_Click'/>
 			<Button Width='200'
 							Height='200'
-							Content='1/2 Sheet Serves 35-40'
+							Content='1/4 Sheet Border'
 							Canvas.Top='322'
 							Canvas.Left='-102' x:Name='Fourth'
 							Click='Fourth_Click'/>
