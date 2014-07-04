@@ -58,9 +58,9 @@
             </StackPanel>
         </Canvas>
 
-        <Canvas  Margin="433,0,0,0" Grid.Row="1" Height="600" Width="600"  x:Name="cvsEditorImages" Background="White" Grid.Column="1" >
+        <Canvas  Margin="433,0,0,0" Grid.Row="1" Height="600" Width="600"  x:Name="cvsEditorImages" Background="White" Grid.Column="1"  Visibility="Collapsed">
             <Image x:Name="fullImage" Width="600" Height="600" Margin="0,0,0,0" Canvas.Left="0" Canvas.Top="0"
-						 Source=""/>
+						 Source="" />
             <StackPanel HorizontalAlignment="Left"
 											Canvas.Left='0'
 											VerticalAlignment="Top" Grid.Column="1" Margin="10 30 10 10" x:Name="spnlFirst">
@@ -74,7 +74,7 @@
 
             <StackPanel HorizontalAlignment="Right"
 											Canvas.Left='350'
-										VerticalAlignment="Top" Grid.Column="2" Margin="-60 30 20 10" x:Name="spnlSecond">
+										VerticalAlignment="Top" Grid.Column="2" Margin="-60 30 20 10" x:Name="spnlSecond" >
                 <Image x:Name="fourthImage" Margin="60.0 0 0 0"
 						 Source=""/>
                 <Image x:Name="fifthImage"  Margin="60.0 20 0 0" 
@@ -84,6 +84,25 @@
             </StackPanel>
         </Canvas>
 
+        <Canvas  Margin="380,0,0,100" Grid.Row="1" Height="700" Width="600"  x:Name="cvsBorder" Background="White" Grid.Column="1"  >
+
+            <StackPanel  Orientation="Horizontal"  Grid.Column="2"  x:Name="sptBorder1" >
+               
+                <Image x:Name="brdImg1"  Height="600" Width="150"
+						 Stretch="Fill"  Margin="40,10,0,0" />
+             
+                <Image x:Name="brdImg2"  Margin="20 10 0 0" 
+						 Height="600" Width="150"
+						 Stretch="Fill"/>
+              
+                <Image x:Name="brdImg3"  Margin="20 10 0 0" 
+						 Height="600" Width="150"
+						 Stretch="Fill" />
+                
+            </StackPanel>
+
+
+        </Canvas>
         <Canvas Margin="433,10,433,118"  x:Name="imgsPrint" />
 
     </Grid>

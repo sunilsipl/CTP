@@ -33,6 +33,7 @@ namespace CtpKiosk
         double vMargin = 0;
         double hSpacing = 0;
         double vSpacing = 0;
+        string param = "";
 
         public ImageEditorNew()
         {
@@ -40,6 +41,22 @@ namespace CtpKiosk
             //cvsEditorImages.Margin = new Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
             DisplayImage();
             SaveCanvas();
+        }
+
+        /// <summary>
+        /// This event is used to get parameters
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            param = Convert.ToString(e.Parameter);
+
+            if (param != "")
+            {
+               cvsBorder.Visibility = Windows.UI.Xaml.Visibility.Visible;
+               DisplayBorder();
+            }
+            else { cvsEditorImages.Visibility = Windows.UI.Xaml.Visibility.Visible; }
         }
 
         /// <summary>
@@ -73,6 +90,25 @@ namespace CtpKiosk
             sixthImage.Width = 200;
             sixthImage.Height = 150;
             cvsEditorImages.Margin = new Thickness { Left = 230,Right = 133, Top = -10,Bottom = 118 };
+        }
+
+
+        /// <summary>
+        /// This function display the border
+        /// </summary>
+        private async void DisplayBorder() {
+
+            StorageFolder sFolder = ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile image = await sFolder.GetFileAsync("screenshot.jpg");  // Get the image from application local folder
+            var stream = await image.OpenReadAsync();
+            var bitmapImage = new BitmapImage();
+            bitmapImage.SetSource(stream);
+            brdImg1.Source = bitmapImage;
+            brdImg2.Source = bitmapImage;
+            brdImg3.Source = bitmapImage;
+            SaveCanvas();
+           
+
         }
 
 
@@ -127,6 +163,10 @@ namespace CtpKiosk
             var stream = await image.OpenReadAsync();
             var bitmapImage = new BitmapImage();
             bitmapImage.SetSource(stream);
+            
+           // bitmapImage.
+            
+
             //Check condition and then display images accordingly
             if (number == "1")   //show 1 image
             {
@@ -292,16 +332,33 @@ namespace CtpKiosk
             RenderTargetBitmap bitmap = null;
             try
             {
-                //// Initialization.  
-                Size canvasSize = this.cvsEditorImages.RenderSize;
-                Point defaultPoint = this.cvsEditorImages.RenderTransformOrigin;
-                // Sezing to output image dimension.  
-                this.cvsEditorImages.Measure(canvasSize);
-                //this.cvsEditorImages.UpdateLayout();
-                //this.cvsEditorImages.Arrange(new Rect(defaultPoint, canvasSize));
-                var bmp = new RenderTargetBitmap();    // Convert canvas to bmp. 
-                await bmp.RenderAsync(this.cvsEditorImages);
-                bitmap = bmp as RenderTargetBitmap;
+                if (param == "")
+                {
+                    //// Initialization.  
+                    Size canvasSize = this.cvsEditorImages.RenderSize;
+                    Point defaultPoint = this.cvsEditorImages.RenderTransformOrigin;
+                    // Sezing to output image dimension.  
+                    this.cvsEditorImages.Measure(canvasSize);
+                    //this.cvsEditorImages.UpdateLayout();
+                    //this.cvsEditorImages.Arrange(new Rect(defaultPoint, canvasSize));
+                    var bmp = new RenderTargetBitmap();    // Convert canvas to bmp. 
+                    await bmp.RenderAsync(this.cvsEditorImages);
+                    bitmap = bmp as RenderTargetBitmap;
+                }
+
+                else 
+                {
+                    //// Initialization.  
+                    Size canvasSize = this.cvsBorder.RenderSize;
+                    Point defaultPoint = this.cvsBorder.RenderTransformOrigin;
+                    // Sezing to output image dimension.  
+                    this.cvsEditorImages.Measure(canvasSize);
+                    //this.cvsEditorImages.UpdateLayout();
+                    //this.cvsEditorImages.Arrange(new Rect(defaultPoint, canvasSize));
+                    var bmp = new RenderTargetBitmap();    // Convert canvas to bmp. 
+                    await bmp.RenderAsync(this.cvsBorder);
+                    bitmap = bmp as RenderTargetBitmap;
+                }
             }
             catch (Exception ex) { }
             return bitmap;

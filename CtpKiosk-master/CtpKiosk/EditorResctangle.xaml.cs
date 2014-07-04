@@ -354,8 +354,8 @@ namespace CtpKiosk
             marking.Visibility = Visibility.Collapsed;
             updateMarking();
             fitTargetBack();
-              Canvas.SetTop(grdImageContainer, selectedTop * -1);
-             Canvas.SetLeft(grdImageContainer, selectedLeft * -1);
+            Canvas.SetTop(grdImageContainer, selectedTop * -1);
+            Canvas.SetLeft(grdImageContainer, selectedLeft * -1);
             btnCrop.Visibility = Visibility.Collapsed;
             btnRotate.Visibility = Visibility.Collapsed;
             btnZoomPlus.Visibility = Visibility.Collapsed;
@@ -1151,32 +1151,7 @@ namespace CtpKiosk
                 // elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width, 0);
                 //  elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, height, 0);
                 Point currentpoint = e.Position;
-
-
-              /*  if (angle == 180)
-                {
-                    elementToTransform.TranslateX -= e.Delta.Translation.X;
-                    elementToTransform.TranslateY -= e.Delta.Translation.Y;
-
-                }
-
-                else if (angle == 90)
-                {
-                    elementToTransform.TranslateX += e.Delta.Translation.Y;
-                    elementToTransform.TranslateY -= e.Delta.Translation.X;
-                }
-
-                else if (angle == 270)
-                {
-                    elementToTransform.TranslateX -= e.Delta.Translation.Y;
-                    elementToTransform.TranslateY += e.Delta.Translation.X;
-                }
-
-                else
-                {
-                    elementToTransform.TranslateX += e.Delta.Translation.X;
-                    elementToTransform.TranslateY += e.Delta.Translation.Y;
-                }*/
+          
 
                 switch (Convert.ToInt32(angle))
                 {
@@ -1192,8 +1167,8 @@ namespace CtpKiosk
 
                         //   elementToTransform.TranslateX -= e.Delta.Translation.X;
                         //    elementToTransform.TranslateY -= e.Delta.Translation.Y;
-                        elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX - e.Delta.Translation.X, width / 2, 0);
-                        elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY - e.Delta.Translation.Y, height / 2, scaleY);
+                        elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX - e.Delta.Translation.X, width/2, 0);
+                        elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY - e.Delta.Translation.Y, height/2, scaleY);
 
 
                         break;
@@ -1212,8 +1187,8 @@ namespace CtpKiosk
 
                         // elementToTransform.TranslateX += e.Delta.Translation.X;
                         // elementToTransform.TranslateY += e.Delta.Translation.Y;
-                        elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width / 2, 0);
-                        elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, height / 2, scaleY);
+                        elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width/2, 0);
+                        elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, 200, 0);
                         break;
                 } //End Switch
 
@@ -1223,12 +1198,12 @@ namespace CtpKiosk
                 //Left position of the image + half of (image width * scale factor) + how far the user has moved the image left or right
                 imageVerticalCenter = (int)(target.Margin.Left + (int)((target.ActualWidth * elementToTransform.ScaleX) / 2) + (int)elementToTransform.TranslateX);
 
-                if (elementToTransform.TranslateX > 300)
+               /* if (elementToTransform.TranslateX > 300)
                 {
-                    Canvas.SetLeft(marking, 300);
-                }
+                   // Canvas.SetLeft(marking, 300);
+                }*/
 
-                else
+               // else
                 {
                     Canvas.SetLeft(marking, elementToTransform.TranslateX);
                     Canvas.SetTop(marking, elementToTransform.TranslateY);

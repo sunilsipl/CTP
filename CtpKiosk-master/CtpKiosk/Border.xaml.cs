@@ -64,11 +64,14 @@ namespace CtpKiosk
         string checkCurveSlider;
         string screenTest;
         double actualTImagewidth;
+        double actualTImagewheight;
         bool isFirstTime = true;
         bool isCropped = false;
         int imageHorizontalCenter = 0;
         int imageVerticalCenter = 0;
         double angle;
+        string nextStatus = "";
+        int rotateCounter = 0;
 
         public Border()
         {
@@ -214,18 +217,15 @@ namespace CtpKiosk
 
                           //  elementToTransform.TranslateX -= e.Delta.Translation.Y;
                            // elementToTransform.TranslateY += e.Delta.Translation.X;
-
                            elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX - e.Delta.Translation.Y, 200, 0);
                            elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.X, 800, 0);
-
                             break;
                             
                         default: 
-
-                           // elementToTransform.TranslateX += e.Delta.Translation.X;
-                           // elementToTransform.TranslateY += e.Delta.Translation.Y;
+                            //elementToTransform.TranslateX += e.Delta.Translation.X;
+                            //elementToTransform.TranslateY += e.Delta.Translation.Y;
                            elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width / 2, 0);
-                           elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, height / 2, scaleY);
+                          elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, height / 2, scaleY);
                             break;
                     } //End Switch
                 }
@@ -340,28 +340,34 @@ namespace CtpKiosk
         {
 
             storeCropClick = "clicked";
-            if (angle == 180)
+            if (nextStatus != "")
             {
-                target.Clip = new RectangleGeometry() { Rect = new Rect(selectedLeft, selectedTop, selectedWidth, selectedHeight) };
-                // target.Clip = new RectangleGeometry() { Rect = new Rect((target.ActualWidth / 2) - selectedLeft, selectedTop, selectedWidth, selectedHeight) };  // Crop the image
-            }
+
+                target.Clip = new RectangleGeometry() { Rect = new Rect(selectedLeft, selectedTop, selectedWidth, selectedHeight) };   // Crop the image 
+                selectCake.SetValue(AutomationProperties.NameProperty, "select 2 file");
+                marking.Visibility = Visibility.Collapsed;
+                updateMarking();
+                fitTargetBack();
+                Canvas.SetTop(grdImageContainer, selectedTop * -1);
+                Canvas.SetLeft(grdImageContainer, selectedLeft * -1);
+                btnCrop.Visibility = Visibility.Collapsed;
+                btnRotate.Visibility = Visibility.Collapsed;
+                btnZoomPlus.Visibility = Visibility.Collapsed;
+                btnZoomMinus.Visibility = Visibility.Collapsed;
+                clippedImgHeight = selectedHeight;
+                clippedImgWidth = selectedWidth;
+                //nextStatus = "Image cropped";
+                marking.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            } // End nextstatus if check
+
             else
             {
-                target.Clip = new RectangleGeometry() { Rect = new Rect(selectedLeft, selectedTop, selectedWidth, selectedHeight) };
+                marking.Visibility = Visibility.Visible;
+                nextStatus = "Rorate Marking";              // Set to check for printable area rotation and crop
+                if (angle == 90 || angle == 270) {
+                    marking.Width = target.ActualWidth;                
+                }
             }
-
-            selectCake.SetValue(AutomationProperties.NameProperty, "select 2 file");
-            marking.Visibility = Visibility.Collapsed;
-            updateMarking();
-            fitTargetBack();
-              Canvas.SetTop(grdImageContainer, selectedTop * -1);
-             Canvas.SetLeft(grdImageContainer, selectedLeft * -1);
-            btnCrop.Visibility = Visibility.Collapsed;
-            btnRotate.Visibility = Visibility.Collapsed;
-            btnZoomPlus.Visibility = Visibility.Collapsed;
-            btnZoomMinus.Visibility = Visibility.Collapsed;
-            clippedImgHeight = selectedHeight;
-            clippedImgWidth = selectedWidth;
         }
 
         /// <summary>
@@ -1001,11 +1007,16 @@ namespace CtpKiosk
             if (TextTransform.Text == "") { TextTransform.Visibility = Visibility.Collapsed; }
             if (isTopImageExist == false) { targetSecond.Visibility = Windows.UI.Xaml.Visibility.Collapsed; }
 
+            if (angle == 0) {
+
+                var imgTargetSec = (CompositeTransform)imgFinal.RenderTransform;
+                imgTargetSec.Rotation += 90;
+            }
             try
             {
                 bool saveforPrint = true;   //  Condition to save captured canvas(edited image) in application folder
                 var bitmap = await objScreenShot.SaveScreenshotAsync(root, fileName, saveforPrint);
-                this.Frame.Navigate(typeof(ImageEditorNew));
+                this.Frame.Navigate(typeof(ImageEditorNew), "fromBorder");
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); }
         }
@@ -1099,40 +1110,124 @@ namespace CtpKiosk
 
             //   var targetleft = Canvas.GetLeft(target);
             //   var gettop = Canvas.GetTop(target);
-            var imgTargetSec = (CompositeTransform)imgFinal.RenderTransform;
-            imgTargetSec.Rotation += 90;
-            angle = imgTargetSec.Rotation;
-            if (angle == 360) { imgTargetSec.Rotation = 0; }
 
-            if (isFirstTime == true)
+             // 0 -> Horigontal, 1-> verical
+
+            if (nextStatus == "")
             {
-                actualTImagewidth = target.ActualWidth;
-                isFirstTime = false;
+                var imgTargetSec = (CompositeTransform)imgFinal.RenderTransform;
+                imgTargetSec.Rotation += 90;
+                angle = imgTargetSec.Rotation;
+                if (angle == 360) { imgTargetSec.Rotation = 0; }
+
+                if (isFirstTime == true)
+                {
+                    actualTImagewidth = target.ActualWidth;
+                    actualTImagewheight = target.ActualHeight;
+                    isFirstTime = false;
+                }
+
+                // condition to change height width of canvas and image acccroding to angle
+                if (angle == 90 || angle == 270)
+                {
+                    imgFinal.Height = 1100;
+                    imgFinal.Width = 550;
+                    // imgFinal.Margin = new Thickness { Left = -260, Top = -290 };
+                    target.MaxHeight = 1100;
+                    target.MaxWidth = 550;
+                    // target.Margin = new Thickness { Top = 150 };
+                    // target.Stretch = Stretch.UniformToFill;
+                    //Canvas.SetTop(target, 150);
+                }
+
+                else
+                {
+                    imgFinal.Width = 1100;
+                    imgFinal.Height = 550;
+                    //imgFinal.Margin = new Thickness { Left = -260, Top = -100 };
+                    target.MaxHeight = 550;
+                    target.MaxWidth = 1100;
+                    target.Stretch = Stretch.Uniform;
+                    // target.Margin = new Thickness { Top = 0 };
+                }
+            } // End next status check
+
+            else { 
+            
+                switch (Convert.ToInt32(angle))
+                {
+                    case 90:
+                    
+                        if (rotateCounter == 0)
+                        {
+                            marking.Height = target.ActualHeight;
+                            marking.Width = target.ActualWidth/4;
+                            rotateCounter = 1;
+                        }
+
+                        else {
+                            marking.Height = target.ActualWidth/4;
+                            marking.Width = actualTImagewheight;
+                            rotateCounter = 0;
+                        }
+
+                        break;
+
+                    case 180:
+
+                        if (rotateCounter == 0)
+                        {
+                            marking.Height = target.ActualWidth;
+                            marking.Width = target.ActualHeight/4;
+                            rotateCounter = 1;
+                        }
+
+                        else
+                        {
+                            marking.Height = target.ActualHeight/4;
+                            marking.Width = target.ActualWidth;
+                            rotateCounter = 0;
+                        }
+                        break;
+
+                    case 270:
+                     
+                        if (rotateCounter == 0)
+                        {
+                            marking.Height = target.ActualHeight;
+                            marking.Width = target.ActualWidth/4; 
+                            rotateCounter = 1;
+                        }
+                        else
+                        {
+                            marking.Height = target.ActualWidth/4;
+                            marking.Width = actualTImagewheight;
+                            rotateCounter = 0;
+                        }
+                        break;
+
+                    default:
+
+                        if (rotateCounter == 0)
+                        {
+                            marking.Height = target.ActualWidth;
+                            marking.Width = target.ActualHeight/4;
+                            rotateCounter = 1;
+                        }
+
+                        else
+                        {
+                            marking.Height = target.ActualHeight/4;
+                            marking.Width = target.ActualWidth;
+                            rotateCounter = 0;
+                        }
+
+                       // marking.Height = 800;
+                      //  marking.Width = 150;
+                      break;
+                 }
             }
 
-            // condition to change height width of canvas and image acccroding to angle
-            if (angle == 90 || angle == 270)
-            {
-                imgFinal.Height = 1100;
-                imgFinal.Width = 550;
-                // imgFinal.Margin = new Thickness { Left = -260, Top = -290 };
-                target.MaxHeight = 1100;
-                target.MaxWidth = 550;
-                // target.Margin = new Thickness { Top = 150 };
-                // target.Stretch = Stretch.UniformToFill;
-                //Canvas.SetTop(target, 150);
-            }
-
-            else
-            {
-                imgFinal.Width = 1100;
-                imgFinal.Height = 550;
-                //imgFinal.Margin = new Thickness { Left = -260, Top = -100 };
-                target.MaxHeight = 550;
-                target.MaxWidth = 1100;
-                target.Stretch = Stretch.Uniform;
-                // target.Margin = new Thickness { Top = 0 };
-            }
         }
 
         /// <summary>
@@ -1151,33 +1246,6 @@ namespace CtpKiosk
                 // elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width, 0);
                 //  elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, height, 0);
                 Point currentpoint = e.Position;
-
-
-              /*  if (angle == 180)
-                {
-                    elementToTransform.TranslateX -= e.Delta.Translation.X;
-                    elementToTransform.TranslateY -= e.Delta.Translation.Y;
-
-                }
-
-                else if (angle == 90)
-                {
-                    elementToTransform.TranslateX += e.Delta.Translation.Y;
-                    elementToTransform.TranslateY -= e.Delta.Translation.X;
-                }
-
-                else if (angle == 270)
-                {
-                    elementToTransform.TranslateX -= e.Delta.Translation.Y;
-                    elementToTransform.TranslateY += e.Delta.Translation.X;
-                }
-
-                else
-                {
-                    elementToTransform.TranslateX += e.Delta.Translation.X;
-                    elementToTransform.TranslateY += e.Delta.Translation.Y;
-                }*/
-
                 switch (Convert.ToInt32(angle))
                 {
                     case 90:
@@ -1190,18 +1258,11 @@ namespace CtpKiosk
 
                     case 180:
 
-                        //   elementToTransform.TranslateX -= e.Delta.Translation.X;
-                        //    elementToTransform.TranslateY -= e.Delta.Translation.Y;
-                        elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX - e.Delta.Translation.X, width / 2, 0);
-                        elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY - e.Delta.Translation.Y, height / 2, scaleY);
-
-
+                        elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX - e.Delta.Translation.X, width/2, 0);
+                        elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY - e.Delta.Translation.Y, height/2, scaleY);
                         break;
 
                     case 270:
-
-                        //  elementToTransform.TranslateX -= e.Delta.Translation.Y;
-                        // elementToTransform.TranslateY += e.Delta.Translation.X;
 
                         elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX - e.Delta.Translation.Y, 200, 0);
                         elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.X, 800, 0);
@@ -1213,7 +1274,7 @@ namespace CtpKiosk
                         // elementToTransform.TranslateX += e.Delta.Translation.X;
                         // elementToTransform.TranslateY += e.Delta.Translation.Y;
                         elementToTransform.TranslateX = Boundary(elementToTransform.TranslateX + e.Delta.Translation.X, width / 2, 0);
-                        elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, height / 2, scaleY);
+                        elementToTransform.TranslateY = Boundary(elementToTransform.TranslateY + e.Delta.Translation.Y, 250, 0);
                         break;
                 } //End Switch
 

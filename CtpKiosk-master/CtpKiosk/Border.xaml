@@ -34,7 +34,7 @@
 						Margin='-260,-100,0,0'
                         Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
 
-            <Canvas x:Name="imgFinal" RenderTransformOrigin="0.5,0.5" MaxHeight="550" MaxWidth="1100" Background="Wheat" >
+            <Canvas x:Name="imgFinal" RenderTransformOrigin="0.5,0.5" MaxHeight="550" MaxWidth="1100" >
                 <Grid x:Name="grdImageContainer" HorizontalAlignment="Left" MaxWidth="1100" MaxHeight="550" ManipulationMode="All"  ManipulationDelta="target_ManipulationDelta" >
                    
                     <Image x:Name="target"
@@ -74,7 +74,9 @@
                             Stroke="Red"
                             Fill="Gray"
                             ManipulationMode="All"
-                            ManipulationDelta="marking_ManipulationDelta">
+                            ManipulationDelta="marking_ManipulationDelta"
+                            Visibility="Collapsed"
+                           >
                     
                     <Rectangle.RenderTransform>
                         <CompositeTransform/>
@@ -562,6 +564,7 @@
 
                     </Button>
 
+                  
                     <Button  x:Name="btnZoomPlus" Content="&#xe1a3;" AutomationProperties.Name="Zoom+"  Click="btnZoomPlus_Click" Style="{StaticResource AppBarButtonStyle}" />
                     <Button  x:Name="btnZoomMinus" Content="&#xe1a4;" AutomationProperties.Name="Zoom-"  Click="btnZoomMinus_Click" Style="{StaticResource AppBarButtonStyle}" />
 
