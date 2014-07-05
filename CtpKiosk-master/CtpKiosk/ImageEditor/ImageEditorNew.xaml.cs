@@ -51,12 +51,26 @@ namespace CtpKiosk
         {
             param = Convert.ToString(e.Parameter);
 
+            // Check for border or square shape
             if (param != "")
             {
+              // It will Display border strip
                cvsBorder.Visibility = Windows.UI.Xaml.Visibility.Visible;
                DisplayBorder();
+               CmbImagesNumber.Items.Clear();
+               CmbImagesNumber.Items.Add(new ComboBoxItem { Content = "1" });
+               CmbImagesNumber.Items.Add(new ComboBoxItem { Content = "2" });
+               CmbImagesNumber.Items.Add(new ComboBoxItem { Content = "3" });
+               CmbImagesNumber.Items.Add(new ComboBoxItem { Content = "4" });
+               numHSpacing.Minimum = 1;
+
             }
-            else { cvsEditorImages.Visibility = Windows.UI.Xaml.Visibility.Visible; }
+            else
+            {  
+              // It will disply square or circle 
+                cvsEditorImages.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                cvsBorder.Visibility = Windows.UI.Xaml.Visibility.Collapsed;            
+            }
         }
 
         /// <summary>
@@ -70,7 +84,6 @@ namespace CtpKiosk
             var stream = await image.OpenReadAsync();
             var bitmapImage = new BitmapImage();
             bitmapImage.SetSource(stream);
-
             firstImage.Source = bitmapImage;
             firstImage.Width = 200;
             firstImage.Height = 150;
@@ -106,10 +119,9 @@ namespace CtpKiosk
             brdImg1.Source = bitmapImage;
             brdImg2.Source = bitmapImage;
             brdImg3.Source = bitmapImage;
+            brdImg4.Source = bitmapImage;
             SaveCanvas();
-           
-
-        }
+       }
 
 
         /// <summary>
@@ -134,14 +146,30 @@ namespace CtpKiosk
             vMargin = Convert.ToDouble(numVMargin.Text);
             hSpacing = Convert.ToDouble(numHSpacing.Text);
             vSpacing = Convert.ToDouble(numVSpacing.Text);
-            spnlFirst.Margin = new Thickness { Left = hMargin, Top = vMargin, Right = 0, Bottom = 0 };
-            spnlSecond.Margin = new Thickness { Left = 0, Top = vMargin, Right = 0, Bottom = 0 };
-            firstImage.Margin = new Thickness { Left = hMargin, Top = 0, Right = hSpacing, Bottom = 0 };
-            secondImage.Margin = new Thickness { Left = hMargin, Top = vSpacing, Right = hSpacing, Bottom = 0 };
-            thirdImage.Margin = new Thickness { Left = hMargin, Top = vSpacing, Right = hSpacing, Bottom = 0 };
-            fourthImage.Margin = new Thickness { Left = hSpacing, Top = 0, Right = 0, Bottom = 0 };
-            fifthImage.Margin = new Thickness { Left = hSpacing, Top = vSpacing, Right = 0, Bottom = 0 };
-            sixthImage.Margin = new Thickness { Left = hSpacing, Top = vSpacing, Right = 0, Bottom = 0 };
+
+            if (param == "")
+            {
+                spnlFirst.Margin = new Thickness { Left = hMargin, Top = vMargin, Right = 0, Bottom = 0 };
+                spnlSecond.Margin = new Thickness { Left = 0, Top = vMargin, Right = 0, Bottom = 0 };
+                firstImage.Margin = new Thickness { Left = hMargin, Top = 0, Right = hSpacing, Bottom = 0 };
+                secondImage.Margin = new Thickness { Left = hMargin, Top = vSpacing, Right = hSpacing, Bottom = 0 };
+                thirdImage.Margin = new Thickness { Left = hMargin, Top = vSpacing, Right = hSpacing, Bottom = 0 };
+                fourthImage.Margin = new Thickness { Left = hSpacing, Top = 0, Right = 0, Bottom = 0 };
+                fifthImage.Margin = new Thickness { Left = hSpacing, Top = vSpacing, Right = 0, Bottom = 0 };
+                sixthImage.Margin = new Thickness { Left = hSpacing, Top = vSpacing, Right = 0, Bottom = 0 };
+            }
+
+            else {
+
+                if (hSpacing < 0) { hSpacing = 20; }
+
+                spnBorder.Margin = new Thickness { Left = hMargin-10, Top = vMargin-30, Right = 0, Bottom = 0 };
+                brdImg1.Margin = new Thickness { Left = hSpacing, Top = 10, Right = 0, Bottom = 0 };
+                brdImg2.Margin = new Thickness { Left = hSpacing, Top = 10, Right = 0, Bottom = 0 };
+                brdImg3.Margin = new Thickness { Left = hSpacing, Top = 10, Right = 0, Bottom = 0 };
+                brdImg4.Margin = new Thickness { Left = hSpacing, Top =10, Right = 0, Bottom = 0 };
+            }
+
             SaveCanvas();
             //cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
         }
@@ -165,103 +193,141 @@ namespace CtpKiosk
             bitmapImage.SetSource(stream);
             
            // bitmapImage.
-            
+            if (param == "")
+            {
 
-            //Check condition and then display images accordingly
-            if (number == "1")   //show 1 image
-            {
-                fullImage.Visibility = Visibility.Visible;
-                fullImage.Source = bitmapImage;
-                firstImage.Visibility = Visibility.Collapsed;
-                secondImage.Visibility = Visibility.Collapsed;
-                thirdImage.Visibility = Visibility.Collapsed;
-                fourthImage.Visibility = Visibility.Collapsed;
-                fifthImage.Visibility = Visibility.Collapsed;
-                sixthImage.Visibility = Visibility.Collapsed;
-                SaveCanvas();
-               // cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
+                //Check condition and then display images accordingly
+                if (number == "1")   //show 1 image
+                {
+                    fullImage.Visibility = Visibility.Visible;
+                    fullImage.Source = bitmapImage;
+                    firstImage.Visibility = Visibility.Collapsed;
+                    secondImage.Visibility = Visibility.Collapsed;
+                    thirdImage.Visibility = Visibility.Collapsed;
+                    fourthImage.Visibility = Visibility.Collapsed;
+                    fifthImage.Visibility = Visibility.Collapsed;
+                    sixthImage.Visibility = Visibility.Collapsed;
+                    SaveCanvas();
+                    // cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
+                }
+                else if (number == "2")   //show 2 images
+                {
+                    //  SaveCanvas();
+                    fullImage.Visibility = Visibility.Collapsed;
+                    firstImage.Visibility = Visibility.Visible;
+                    secondImage.Visibility = Visibility.Visible;
+                    firstImage.Source = bitmapImage;
+                    firstImage.Width = 600;
+                    firstImage.Height = 250;
+                    firstImage.Margin = new Thickness { Left = 0, Top = -10, Right = 0, Bottom = 0 };
+                    secondImage.Source = bitmapImage;
+                    secondImage.Width = 600;
+                    secondImage.Height = 250;
+                    secondImage.Margin = new Thickness { Left = 0, Top = 19, Right = 0, Bottom = 0 };
+                    thirdImage.Visibility = Visibility.Collapsed;
+                    fourthImage.Visibility = Visibility.Collapsed;
+                    fifthImage.Visibility = Visibility.Collapsed;
+                    sixthImage.Visibility = Visibility.Collapsed;
+                    SaveCanvas();
+                    // cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
+                }
+                else if (number == "4")    //show 4 images
+                {
+                    fullImage.Visibility = Visibility.Collapsed;
+                    firstImage.Visibility = Visibility.Visible;
+                    secondImage.Visibility = Visibility.Collapsed;
+                    thirdImage.Visibility = Visibility.Visible;
+                    fourthImage.Visibility = Visibility.Visible;
+                    fifthImage.Visibility = Visibility.Collapsed;
+                    sixthImage.Visibility = Visibility.Visible;
+                    firstImage.Width = 250;
+                    firstImage.Height = 250;
+                    fourthImage.Width = 250;
+                    fourthImage.Height = 250;
+                    thirdImage.Width = 250;
+                    thirdImage.Height = 250;
+                    sixthImage.Width = 250;
+                    sixthImage.Height = 250;
+                    firstImage.Margin = new Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
+                    thirdImage.Margin = new Thickness { Left = 0, Top = -30, Right = 0, Bottom = 0 };
+                    fourthImage.Margin = new Thickness { Left = 10, Top = 0, Right = 0, Bottom = 0 };
+                    sixthImage.Margin = new Thickness { Left = 10, Top = -30, Right = 0, Bottom = 0 };
+                    SaveCanvas();
+                    // cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
+                }
+                else if (number == "6")  //show 6 images
+                {
+                    fullImage.Visibility = Visibility.Collapsed;
+                    firstImage.Visibility = Visibility.Visible;
+                    secondImage.Visibility = Visibility.Visible;
+                    thirdImage.Visibility = Visibility.Visible;
+                    fourthImage.Visibility = Visibility.Visible;
+                    fifthImage.Visibility = Visibility.Visible;
+                    sixthImage.Visibility = Visibility.Visible;
+                    firstImage.Width = 200;
+                    firstImage.Height = 150;
+                    secondImage.Width = 200;
+                    secondImage.Height = 150;
+                    thirdImage.Width = 200;
+                    thirdImage.Height = 150;
+                    fourthImage.Width = 200;
+                    fourthImage.Height = 150;
+                    fifthImage.Width = 200;
+                    fifthImage.Height = 150;
+                    sixthImage.Width = 200;
+                    sixthImage.Height = 150;
+                    hMargin = Convert.ToDouble(numHMargin.Text);
+                    vMargin = Convert.ToDouble(numVMargin.Text);
+                    hSpacing = Convert.ToDouble(numHSpacing.Text);
+                    vSpacing = Convert.ToDouble(numVSpacing.Text);
+                    spnlFirst.Margin = new Thickness { Left = hMargin, Top = vMargin, Right = 0, Bottom = 0 };
+                    spnlSecond.Margin = new Thickness { Left = 0, Top = vMargin, Right = 0, Bottom = 0 };
+                    firstImage.Margin = new Thickness { Left = hMargin, Top = 0, Right = hSpacing, Bottom = 0 };
+                    secondImage.Margin = new Thickness { Left = hMargin, Top = vSpacing, Right = hSpacing, Bottom = 0 };
+                    thirdImage.Margin = new Thickness { Left = hMargin, Top = vSpacing, Right = hSpacing, Bottom = 0 };
+                    fourthImage.Margin = new Thickness { Left = hSpacing, Top = 0, Right = 0, Bottom = 0 };
+                    fifthImage.Margin = new Thickness { Left = hSpacing, Top = vSpacing, Right = 0, Bottom = 0 };
+                    sixthImage.Margin = new Thickness { Left = hSpacing, Top = vSpacing, Right = 0, Bottom = 0 };
+                    SaveCanvas();
+                    // cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
+                }
+            } // End param = ""
+
+            else {
+
+                switch (Convert.ToInt32(number))    // Case for display number of border according to selected value
+                { 
+                    case 1:
+                        brdImg2.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                        brdImg3.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                        SaveCanvas();
+                        break;
+
+                    case 2:
+                        brdImg3.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                        brdImg4.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                        brdImg2.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        SaveCanvas();
+                        break;
+
+                    case 3:
+                        brdImg1.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        brdImg2.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        brdImg3.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        brdImg4.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                        SaveCanvas();
+                        break;
+                    case 4:
+                        brdImg1.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        brdImg2.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        brdImg3.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        brdImg4.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        SaveCanvas();
+                        break;
+
+                }
             }
-            else if (number == "2")   //show 2 images
-            {
-              //  SaveCanvas();
-                fullImage.Visibility = Visibility.Collapsed;
-                firstImage.Visibility = Visibility.Visible;
-                secondImage.Visibility = Visibility.Visible;
-                firstImage.Source = bitmapImage;
-                firstImage.Width = 600;
-                firstImage.Height = 250;
-                firstImage.Margin = new Thickness { Left = 0, Top = -10, Right = 0, Bottom = 0 };
-                secondImage.Source = bitmapImage;
-                secondImage.Width = 600;
-                secondImage.Height = 250;
-                secondImage.Margin = new Thickness { Left = 0, Top = 19, Right = 0, Bottom = 0 };
-                thirdImage.Visibility = Visibility.Collapsed;
-                fourthImage.Visibility = Visibility.Collapsed;
-                fifthImage.Visibility = Visibility.Collapsed;
-                sixthImage.Visibility = Visibility.Collapsed;
-                SaveCanvas();
-               // cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
-            }
-            else if (number == "4")    //show 4 images
-            {
-                fullImage.Visibility = Visibility.Collapsed;
-                firstImage.Visibility = Visibility.Visible;
-                secondImage.Visibility = Visibility.Collapsed;
-                thirdImage.Visibility = Visibility.Visible;
-                fourthImage.Visibility = Visibility.Visible;
-                fifthImage.Visibility = Visibility.Collapsed;
-                sixthImage.Visibility = Visibility.Visible;
-                firstImage.Width = 250;
-                firstImage.Height = 250;
-                fourthImage.Width = 250;
-                fourthImage.Height = 250;
-                thirdImage.Width = 250;
-                thirdImage.Height = 250;
-                sixthImage.Width = 250;
-                sixthImage.Height = 250;
-                firstImage.Margin = new Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
-                thirdImage.Margin = new Thickness { Left = 0, Top = -30, Right = 0, Bottom = 0 };
-                fourthImage.Margin = new Thickness { Left = 10, Top = 0, Right = 0, Bottom = 0 };
-                sixthImage.Margin = new Thickness { Left = 10, Top = -30, Right = 0, Bottom = 0 };
-                SaveCanvas();
-               // cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
-            }
-            else if (number == "6")  //show 6 images
-            {
-                fullImage.Visibility = Visibility.Collapsed;
-                firstImage.Visibility = Visibility.Visible;
-                secondImage.Visibility = Visibility.Visible;
-                thirdImage.Visibility = Visibility.Visible;
-                fourthImage.Visibility = Visibility.Visible;
-                fifthImage.Visibility = Visibility.Visible;
-                sixthImage.Visibility = Visibility.Visible;
-                firstImage.Width = 200;
-                firstImage.Height = 150;
-                secondImage.Width = 200;
-                secondImage.Height = 150;
-                thirdImage.Width = 200;
-                thirdImage.Height = 150;
-                fourthImage.Width = 200;
-                fourthImage.Height = 150;
-                fifthImage.Width = 200;
-                fifthImage.Height = 150;
-                sixthImage.Width = 200;
-                sixthImage.Height = 150;
-                hMargin = Convert.ToDouble(numHMargin.Text);
-                vMargin = Convert.ToDouble(numVMargin.Text);
-                hSpacing = Convert.ToDouble(numHSpacing.Text);
-                vSpacing = Convert.ToDouble(numVSpacing.Text);
-                spnlFirst.Margin = new Thickness { Left = hMargin, Top = vMargin, Right = 0, Bottom = 0 };
-                spnlSecond.Margin = new Thickness { Left = 0, Top = vMargin, Right = 0, Bottom = 0 };
-                firstImage.Margin = new Thickness { Left = hMargin, Top = 0, Right = hSpacing, Bottom = 0 };
-                secondImage.Margin = new Thickness { Left = hMargin, Top = vSpacing, Right = hSpacing, Bottom = 0 };
-                thirdImage.Margin = new Thickness { Left = hMargin, Top = vSpacing, Right = hSpacing, Bottom = 0 };
-                fourthImage.Margin = new Thickness { Left = hSpacing, Top = 0, Right = 0, Bottom = 0 };
-                fifthImage.Margin = new Thickness { Left = hSpacing, Top = vSpacing, Right = 0, Bottom = 0 };
-                sixthImage.Margin = new Thickness { Left = hSpacing, Top = vSpacing, Right = 0, Bottom = 0 };
-                SaveCanvas();
-               // cvsEditorImages.Margin = new Thickness { Left = 433, Right = 10, Top = 133, Bottom = 118 };
-            }
+
         }
 
 

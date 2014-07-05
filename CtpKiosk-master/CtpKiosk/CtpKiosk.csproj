@@ -133,8 +133,11 @@
     <Compile Include="EditorResctangle.xaml.cs">
       <DependentUpon>EditorResctangle.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Border.xaml.cs">
+    <Compile Include="ImageEditor\Border.xaml.cs">
       <DependentUpon>Border.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BorderNew.xaml.cs">
+      <DependentUpon>BorderNew.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageEditor\ImageEditorNew.xaml.cs">
       <DependentUpon>ImageEditorNew.xaml</DependentUpon>
@@ -173,6 +176,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\cropIcon.jpg" />
     <Content Include="Assets\Dogs1.jpg" />
     <Content Include="Assets\FlatIconcake.png" />
     <Content Include="Assets\FlatIconcake150x150.png" />
@@ -207,7 +211,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Border.xaml">
+    <Page Include="ImageEditor\Border.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BorderNew.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

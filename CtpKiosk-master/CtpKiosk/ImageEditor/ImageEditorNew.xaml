@@ -86,19 +86,22 @@
 
         <Canvas  Margin="380,0,0,100" Grid.Row="1" Height="700" Width="600"  x:Name="cvsBorder" Background="White" Grid.Column="1"  >
 
-            <StackPanel  Orientation="Horizontal"  Grid.Column="2"  x:Name="sptBorder1" >
+            <StackPanel  Orientation="Horizontal"  Grid.Column="2"  x:Name="spnBorder" >
                
-                <Image x:Name="brdImg1"  Height="600" Width="150"
-						 Stretch="Fill"  Margin="40,10,0,0" />
+                <Image x:Name="brdImg1"  Height="600" Width="100"
+						 Stretch="Fill"  Margin="60,10,0,0" />
              
                 <Image x:Name="brdImg2"  Margin="20 10 0 0" 
-						 Height="600" Width="150"
+						 Height="600" Width="100"
 						 Stretch="Fill"/>
               
                 <Image x:Name="brdImg3"  Margin="20 10 0 0" 
-						 Height="600" Width="150"
+						 Height="600" Width="100"
 						 Stretch="Fill" />
-                
+                <Image x:Name="brdImg4"  Margin="20 10 0 0" 
+						 Height="600" Width="100"
+						 Stretch="Fill" />
+
             </StackPanel>
 
 
